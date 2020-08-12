@@ -7,7 +7,7 @@ from tornado import iostream, gen
 from tornado.web import RequestHandler
 
 
-class HeartBeat(RequestHandler, ABC):
+class HeartBeatHandler(RequestHandler, ABC):
 
     URI = r'/'
 
