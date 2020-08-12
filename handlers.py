@@ -7,7 +7,7 @@ from tornado import iostream, gen
 from tornado.web import RequestHandler
 
 
-class HeartBeat(RequestHandler, ABC):
+class HeartBeatHandler(RequestHandler, ABC):
 
     URI = r'/'
 
@@ -18,7 +18,7 @@ class HeartBeat(RequestHandler, ABC):
 class HugeFileHandler(RequestHandler, ABC):
 
     URI = r'/download/([.a-zA-Z0-9]*)'
-    PARAMS = {'path': '/Users/egor/Downloads'}
+    PARAMS = {'path': '/home/yogson/Nextcloud/PycharmProjects/tornado_tst/media'}
 
     def initialize(self, **kwargs):
         self.path = kwargs.get('path')
@@ -35,7 +35,7 @@ class HugeFileHandler(RequestHandler, ABC):
             }
             for header, value in h.items():
                 self.set_header(header, value)
-
+            print('Uploading', file_name, 'to', self.request.remote_ip)
             async with aiofiles.open(file_path, mode='rb') as f:
                 while True:
                     chunk = await f.read((1024**2)*10)
@@ -48,8 +48,9 @@ class HugeFileHandler(RequestHandler, ABC):
                         break
                     finally:
                         del chunk
-                        await gen.sleep(0.00000001)
+                        await gen.sleep(0.0001)
         else:
             self._reason = f'File {file_name} not found'
             self.write_error(404)
+        print('Finished', file_name)
 
