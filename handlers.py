@@ -11,8 +11,10 @@ class HeartBeatHandler(RequestHandler, ABC):
 
     URI = r'/'
 
-    def get(self):
+    async def get(self):
         self.write(datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M:%S')+' OK\n')
+        await self.flush()
+        await gen.sleep(0.0001)
 
 
 class HugeFileHandler(RequestHandler, ABC):
