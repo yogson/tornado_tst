@@ -1,4 +1,4 @@
 while true; do
-	curl 127.0.0.1:8888
+	curl 192.168.88.35:8888
 	sleep 1
 done
