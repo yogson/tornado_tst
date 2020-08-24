@@ -32,5 +32,5 @@ def gen_file_mono(file_path, file_len):
 
 
 start_time = time()
-gen_file_multi_map('/home/yogson/Nextcloud/PycharmProjects/tornado_tst/5.txt', 500)
+gen_file_multi_map('/home/yogson/Documents/media/7.txt', 1500)
 print(round(time()-start_time, 2))
