@@ -33,18 +33,26 @@ def get_classes(module_name: str) -> list:
     try:
         module = __import__(module_name)
     except ModuleNotFoundError as e:
-        print(f'Dependency not found in module {module_name}: {e.name}. Will try to install...')
-        import pip
-        res = pip.main(['install', e.name])
-        if res == 0:
-            return get_classes(module_name)
-        else:
-            print(f'Unable to install {e.name}. Module {module_name} will be disabled.')
-            return []
+        return get_classes(module_name) if install_dep(e.name, module_name) else []
+
     return inspect.getmembers(
         module,
         lambda member: inspect.isclass(member) and member.__module__ == module.__name__
     )
+
+
+def install_dep(dep_name: str, module_name: str) -> bool:
+    import pip
+
+    print(f'Dependency not found in module {module_name}: {dep_name}. Will try to install...')
+    res = pip.main(['install', dep_name])
+
+    if res == 0:
+        print(dep_name, 'successfully installed')
+        return True
+    else:
+        print(f'Unable to install {dep_name}. Module {module_name} will be disabled.')
+        return False
 
 
 def get_endpoints(file_names: list) -> list:
