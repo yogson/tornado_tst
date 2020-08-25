@@ -1,3 +1,3 @@
-for (( i = 0; i <10; i++ )); do
-	wget -P FILES 192.168.88.35:8888/download/$((1 + RANDOM % 6)).txt &
+for (( i = 0; i <20; i++ )); do
+	wget -P /home/yogson/Downloads 127.0.0.1:8888/download/$((1 + RANDOM % 7)).txt &
 done

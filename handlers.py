@@ -11,16 +11,14 @@ class HeartBeatHandler(RequestHandler, ABC):
 
     URI = r'/'
 
-    async def get(self):
-        self.write(datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M:%S')+' OK\n')
-        await self.flush()
-        await gen.sleep(0.0001)
+    def get(self):
+        self.write(datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M:%S')+' OK')
 
 
 class HugeFileHandler(RequestHandler, ABC):
 
     URI = r'/download/([.a-zA-Z0-9]*)'
-    PARAMS = {'path': '/home/yogson/Nextcloud/PycharmProjects/tornado_tst/media'}
+    PARAMS = {'path': '/home/yogson/Documents/media'}
 
     def initialize(self, **kwargs):
         self.path = kwargs.get('path')
