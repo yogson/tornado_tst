@@ -44,6 +44,7 @@ def get_classes(module_name: str) -> list:
 def install_dep(dep_name: str, module_name: str) -> bool:
     import pip
 
+    #  TODO Logging, not printing
     print(f'Dependency not found in module {module_name}: {dep_name}. Will try to install...')
     res = pip.main(['install', dep_name])
 
