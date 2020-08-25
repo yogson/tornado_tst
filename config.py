@@ -20,7 +20,7 @@ def get_module_names():
 def get_handler(cls: tuple) -> tuple:
     kls_name, kls = cls
 
-    if kls_name.__contains__('Handler'):
+    if kls_name and kls_name.__contains__('Handler'):
         assert hasattr(kls, 'URI'), f'Handler class {kls} must contain endpoint URI'  # если нет адреса эндпоинта: эксепшн
 
         if hasattr(kls, 'PARAMS'):
@@ -30,7 +30,13 @@ def get_handler(cls: tuple) -> tuple:
 
 
 def get_classes(module_name: str) -> list:
-    module = __import__(module_name)
+    try:
+        module = __import__(module_name)
+    except ModuleNotFoundError as e:
+        print(f'Dependency not found in module {module_name}: {e.name}. Will try to install...')
+        import pip
+        pip.main(['install', e.name])
+        return get_classes(module_name)
     return inspect.getmembers(
         module,
         lambda member: inspect.isclass(member) and member.__module__ == module.__name__
