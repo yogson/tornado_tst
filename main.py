@@ -1,7 +1,7 @@
 import tornado.ioloop
 from tornado.web import Application
 
-from config import ENDPOINTS
+from plugins import ENDPOINTS
 
 
 def make_app():

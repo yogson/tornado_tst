@@ -4,17 +4,17 @@ from os.path import join, isfile, getsize
 
 import aiofiles
 import aiohttp
-import psycopg2
 from tornado import iostream, gen
-from tornado.web import RequestHandler
+from tornado.web import RequestHandler, addslash
 
 
 class HeartBeatHandler(RequestHandler, ABC):
 
     URI = r'/'
 
-    def get(self):
+    async def get(self):
         self.write(datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M:%S')+' OK')
+        await self.flush()
 
 
 class HugeFileHandler(RequestHandler, ABC):
@@ -50,7 +50,7 @@ class HugeFileHandler(RequestHandler, ABC):
                         break
                     finally:
                         del chunk
-                        await gen.sleep(0.0001)
+                        await gen.sleep(0.00001)
         else:
             self._reason = f'File {file_name} not found'
             self.write_error(404)
