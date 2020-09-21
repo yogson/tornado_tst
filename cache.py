@@ -7,6 +7,11 @@ from redis import Redis
 
 
 class CacheInterface(ABC):
+    """
+    Caching system interface class.
+    Please, implement put and get methods.
+
+    """
 
     def __init__(self, realm):
         self.realm = realm
@@ -22,6 +27,12 @@ class CacheInterface(ABC):
         pass
 
     def get_or_renew(self, key, renew_value):
+        """
+        Utility function to get data from the cache or if absent call renew function.
+        :param key: str
+        :param renew_value: callable
+        :return: cache value
+        """
         result = self.get(key)
         if not result and renew_value:
             result = renew_value()
@@ -30,6 +41,9 @@ class CacheInterface(ABC):
 
 
 class LocalCache(CacheInterface):
+    """
+    Caching interface realization to hold the data in app's memory while ttl
+    """
 
     def __init__(self, realm):
         super().__init__(realm)
@@ -43,6 +57,7 @@ class LocalCache(CacheInterface):
         return result.value if result else None
 
     class TimedValue:
+        """Class to keep value while not ttl has expired"""
 
         def __init__(self, value, ttl):
             self.expiration = datetime.now() + timedelta(seconds=ttl)
@@ -77,6 +92,12 @@ def deserialize(data: str):
 
 
 class KeyValueTimedCache:
+    """
+    Cache manager class.
+    Realms are scopes of data with specified ttl and caching interface realization.
+    You can have in your app certain different cache types simultaneously.
+
+    """
 
     # TODO move to config
     default_ttl = 60
@@ -141,6 +162,9 @@ class KeyValueTimedCache:
 
 
 class RedisCache(CacheInterface):
+    """
+    Cache interface implementation class using Redis to keep the data while not ttl has passed.
+    """
 
     realm_index = -1
 
