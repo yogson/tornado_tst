@@ -8,7 +8,7 @@ from tornado import iostream, gen
 from tornado.web import RequestHandler, addslash
 
 
-class HeartBeatHandler(RequestHandler, ABC):
+class TestHandler(RequestHandler, ABC):
 
     URI = r'/'
 
