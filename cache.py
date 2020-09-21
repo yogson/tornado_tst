@@ -42,7 +42,7 @@ class CacheInterface(ABC):
 
 class LocalCache(CacheInterface):
     """
-    Caching interface realization to hold the data in app's memory while ttl
+    Caching interface realization to keep the data in app's memory while ttl
     """
 
     def __init__(self, realm):
@@ -96,7 +96,6 @@ class KeyValueTimedCache:
     Cache manager class.
     Realms are scopes of data with specified ttl and caching interface realization.
     You can have in your app certain different cache types simultaneously.
-
     """
 
     # TODO move to config
@@ -163,7 +162,7 @@ class KeyValueTimedCache:
 
 class RedisCache(CacheInterface):
     """
-    Cache interface implementation class using Redis to keep the data while not ttl has passed.
+    Cache interface implementation using Redis to keep the data while not ttl has passed.
     """
 
     realm_index = -1
