@@ -10,6 +10,10 @@ class BaseHandler(RequestHandler):
     def initialize(self):
         self.data = None
 
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Origin', 'http://127.0.0.1:9090')
+
     def prepare(self):
         self.data = json.loads(self.request.body) if self.request.body else dict()
 
@@ -17,7 +21,6 @@ class BaseHandler(RequestHandler):
         self._reason = 'Method not implemented'
         self.send_error(405)
 
-    @Auth(permission='read_file')
     def get(self):
         self.not_implemented()
 

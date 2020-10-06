@@ -1,12 +1,27 @@
-from random import randint
+from random import randint, randrange
 
 import jwt
-import asyncio
+
+
+def get_secrest_key(length=32):
+
+    def rand_ascii():
+        while True:
+            yield chr(randrange(33, 127))
+
+    secret_key = ''
+    char_gen = rand_ascii()
+
+    for _ in range(length):
+        secret_key += next(char_gen)
+
+    return secret_key
 
 
 class _UserAuthChecker:
 
-    SECRET_KEY = 'zxcnoidwa34rwv4etr3Q2GHVBTNYI5NU6R5EBASd2qSAZ'
+    SECRET_KEY = get_secrest_key()
+    print(SECRET_KEY)
 
     def __init__(self, request):
         self.request = request
